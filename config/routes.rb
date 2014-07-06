@@ -3,7 +3,9 @@ Rails.application.routes.draw do
 
   root 'posts#index'
 
-  resources :posts, only: [:index, :new, :create]
+  resources :posts, only: [:index, :new, :create] do
+    resources :meows, only: [:create, :destroy]
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe User, :type => :model do
   describe User do
     it { should have_many(:posts).dependent(:destroy) }
+    it { should have_many(:meows).dependent(:destroy) }
 
     describe "#password" do
       it { should have_valid(:password).when("abcd1234", "asd^2jk@%#&!!") }

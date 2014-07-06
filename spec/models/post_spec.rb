@@ -10,6 +10,8 @@ describe Post do
 
   it { should have_valid(:description).when(nil, "", ("a"*140)) }
   it { should_not have_valid(:description).when("a"*141) }
+
+  it { should have_many(:meows).dependent(:destroy) }
 end
 
 describe ".by_recency" do
@@ -20,4 +22,43 @@ describe ".by_recency" do
 
     expect(Post.by_recency).to eq [newest, middle, oldest]
   end
+end
+
+describe "#has_meow_from?" do
+  it "returns true if given user has already created a meow for post" do
+    user = FactoryGirl.create(:user)
+    post = FactoryGirl.create(:post)
+    meow = FactoryGirl.create(:meow, user: user, post: post)
+
+    expect(post).to have_meow_from user
+  end
+
+  it "returns false if given user has not already created a meow for post" do
+    user = FactoryGirl.create(:user)
+    post = FactoryGirl.create(:post)
+    meow = FactoryGirl.create(:meow, post: post)
+
+    expect(post).to_not have_meow_from user
+  end
+
+describe "#meow_from" do
+  context "User has a Meow for given Post" do
+    it "returns that instance of Meow" do
+      meow = FactoryGirl.create(:meow)
+      post = meow.post
+      user = meow.user
+
+      expect(post.meow_from(user)).to eq meow
+    end
+  end
+
+  context "User doesn't have a Meow for given Post" do
+    it "returns nil" do
+      user = FactoryGirl.create(:user)
+      post = FactoryGirl.create(:post)
+
+      expect(post.meow_from(user)).to eq nil
+    end
+  end
+end
 end
