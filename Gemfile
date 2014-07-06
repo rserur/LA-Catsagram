@@ -47,7 +47,9 @@ group :development, :test do
     gem 'valid_attribute'
     gem 'shoulda'
     gem 'quiet_assets'
+    gem 'orderly'
   end
 
   gem 'devise'
   gem 'simple_form'
+  gem 'carrierwave'
